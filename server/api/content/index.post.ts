@@ -1,15 +1,15 @@
-import todoModel from "../../models/content.model"
+import contentModel from "../../models/content.model"
 import setResponse from "~/server/utils/set-response";
 import { Error } from "mongoose"
-import { ITodo } from "~/interface";
+import { IContent } from "~/interface";
 
 export default defineEventHandler(async (event) => {
     try {
-        const body: ITodo = await readBody(event)
+        const body: IContent = await readBody(event)
         if (!body) {
             return setResponse(event, { statusCode: 400, statusMessage: 'Item field is required.' })
         }
-        await todoModel.create({ item: body.item })
+        await contentModel.create( body )
         return setResponse(event, { statusCode: 200, statusMessage: 'New item has been added.' })
     } catch (error: unknown) {
         if (error instanceof Error.ValidationError) {

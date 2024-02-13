@@ -22,11 +22,13 @@ const headerStyle: CSSProperties = {
 };
 
 const contentStyle: CSSProperties = {
-  textAlign: 'center',
   height: '100%',
   lineHeight: '120px',
   color: '#fff',
   backgroundColor: '#108ee9',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 };
 
 </script>

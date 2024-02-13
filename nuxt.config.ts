@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@ant-design-vue/nuxt',
+    '@pinia/nuxt',
   ],
   css: [
     '@/styles/main.css',
@@ -15,5 +16,8 @@ export default defineNuxtConfig({
         MONGO_URL: process.env.MONGO_URL
     }
 },
+  pinia: {
+    storesDirs: ['./stores/**',],
+  },
 
 })
