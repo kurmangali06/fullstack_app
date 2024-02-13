@@ -48,6 +48,11 @@
                         style="width: 80%; margin-right: 8px"
                         />
                       </a-form-item>
+                      <img v-if="el.file" width="200px" height="100px" :src="`/images/${el.file}`" :alt="el.file" />
+                      <input name="file" type="file" @change="handleFileChange" />
+                      <div style="margin-top: 20px">
+                        <button @click.prevent="handleFileUpload(index, i)">Upload File</button>
+                      </div>
                   </div>
                   <MinusCircleOutlined
                     style=" color: red"
@@ -99,7 +104,7 @@
               >
               <div class="wrapper block" >
                 <div>
-                  <ClientOnly>
+        
                   <a-form-item label="телефон">      
                     <a-input
                     v-model:value.number="tel.phone"
@@ -108,7 +113,7 @@
                       style="width: 80%; margin-right: 8px"
                     />
                     </a-form-item>
-                  </ClientOnly>
+     
                 </div>
                 <MinusCircleOutlined
                   style=" color: red;"
@@ -183,6 +188,7 @@
         <a-button type="primary" html-type="submit" @click="submitForm">Submit</a-button>
       </a-form-item>
     </a-form>
+
   </div>
 </template>
 <script lang="ts" setup>
@@ -192,10 +198,12 @@ import { type ILink, type IAllItems, type IContent, type ISection, type IContact
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { VueDraggableNext } from 'vue-draggable-next'
 import { message } from 'ant-design-vue';
+
 // definePageMeta({
 //   middleware: 'auth'
 // })
 const formRef = ref<FormInstance>();
+  const file = ref<File | string>('');
 let formState = reactive<IContent>({
   footer: {
   links: [],
@@ -204,6 +212,28 @@ let formState = reactive<IContent>({
   section: [],
   _id: ''
 });
+const handleFileChange = (fileData: Event) => {
+  const fileInputData = fileData.target as HTMLInputElement;
+  if (fileInputData.files && fileInputData.files?.length > 0) {
+    file.value = fileInputData.files[0];
+  }
+};
+const handleFileUpload = async (index: number, childIndex :number) => {
+  console.log(file);
+  const body = new FormData();
+  body.append('file', file.value);
+  await useFetch('/api/upload', {
+    method: 'POST',
+    body,
+  }).then(res => {
+    message.success('Успешно добавлено');
+    console.log(res);
+    
+    formState.section[index].items[childIndex].file = String(res.data.value)
+  }).catch((error: any) => {
+      message.error(error.message);
+    });
+};
 function submitForm() {
   if(formRef.value) {
     let formData = {...formState}
@@ -236,7 +266,6 @@ function submitForm() {
 };
 
 function removeChild(el: IBlock, i: number, childIndex: number) {
-  console.log(el, i);
   formState.section[i].items.splice(childIndex, 1);
 }
 const removeLinks = (item: ILink) => {
@@ -244,11 +273,7 @@ const removeLinks = (item: ILink) => {
 };
 
 function removeSection(item: ISection) {
-  console.log(item);
-  
     formState.section = formState.section.filter((e:ISection) => e._id !== item._id);
-    console.log( formState.section);
-    
 }
 function addLinks () {
   const _id = crypto.randomUUID()  
@@ -282,8 +307,9 @@ function addChild(i:number) {
   formState.section[i].items.push({
     _id,
     title: '',
-    description: ''
-  })
+    description: '',
+    file: ''
+})
 }
 await useFetch<IAllItems>('/api/content').then((response) => {
 

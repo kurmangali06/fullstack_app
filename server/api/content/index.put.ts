@@ -5,7 +5,9 @@ import { IContent } from "~/interface";
 
 export default defineEventHandler(async (event) => {
     try {
-        const body: IContent = await readBody(event);        
+        const body: IContent = await readBody(event); 
+        console.log(body);
+               
         if (!body) {
             return setResponse(event, { statusCode: 400, statusMessage: 'Item field is required.' });
         }

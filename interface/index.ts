@@ -22,6 +22,7 @@ export interface IBlock {
     title: string
     _id:  string
     description: string
+    file: string
 }
 export  interface ISection {
     title: string

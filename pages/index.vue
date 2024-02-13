@@ -13,6 +13,7 @@
       <div v-for="el in item.items" :key="el._id">
          {{ el.title }}
          {{ el.description }}
+         <img v-if="el.file" width="200px" :src="`/images/${el.file}`" :alt="el.file" />
       </div>
      </div>
    </template>
