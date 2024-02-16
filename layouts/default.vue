@@ -1,34 +1,27 @@
 <template>
-    <a-layout :style="{ width: '100%' }" >
-      <a-layout-header :style="headerStyle" style="display: flex; gap: 10px;">
-        <NuxtLink to="/admin">ADMIN</NuxtLink>
-        <NuxtLink to="/">Client</NuxtLink>
-      </a-layout-header>
-      <a-layout-content :style="contentStyle"> 
+    <div class="content">
+      <Header v-if="route.name !== 'admin'"/>
+      <div class="content__body">
         <NuxtPage/>
-    </a-layout-content>
-    </a-layout>
+      </div>
+      <Footer v-if="route.name !== 'admin'"/>
+    </div>
 </template>
-
-<script lang="ts" setup>
-import type { CSSProperties } from 'vue';
-const headerStyle: CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  height: '10vh',
-  paddingInline: 50,
-  lineHeight: '64px',
-  backgroundColor: '#7dbcea',
-};
-
-const contentStyle: CSSProperties = {
-  height: '100%',
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#108ee9',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center'
-};
+<script setup lang="ts">
+const route = useRoute()
 
 </script>
+<style lang="scss" scoped>
+.content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: #fff;
+  height: 100vh;
+  &__body {
+    flex-grow: 1;
+    height: fit-content;
+  }
+}
+</style>

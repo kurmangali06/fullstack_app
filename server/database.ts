@@ -1,12 +1,14 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+
 export default async () => {
-  const config = useRuntimeConfig()
-    try {
-        await mongoose.connect(config.apiSecret.MONGO_URL)
-        console.log('Successfully connected to DB.')
-    } catch (error) {
-        console.log(error);
-        
-        return createError({ statusCode: 500, statusMessage: 'Something went wrong.' })
-    }
-}
+  try {
+    const config = useRuntimeConfig();
+    // Подключение к MongoDB
+    await mongoose.connect(config.apiSecret.MONGO_URL);
+    console.log('Successfully connected to MongoDB.');
+  } catch (error) {
+    // Обработка ошибок подключения
+    console.error('Error connecting to MongoDB:', error);
+    return createError({ statusCode: 500, statusMessage: 'Something went wrong.' });
+  }
+};

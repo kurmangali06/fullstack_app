@@ -7,7 +7,9 @@ const schema = new mongoose.Schema<IContent>({
     footer : {
         links: [],
         contacts: [],
-    }
+        adress: []
+    },
+    header: {}
    
 }, { timestamps: true })
 

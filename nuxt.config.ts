@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   css: [
     '@/styles/main.css',
   ],
+
   nitro: {
     plugins: ['~/server/database.ts']
   },

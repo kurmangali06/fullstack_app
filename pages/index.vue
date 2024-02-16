@@ -1,41 +1,34 @@
 <template>
-   <template v-if="content">
-     <ul v-if="content.footer.links.length">
-      <li v-for="item in content.footer.links" :key="item._id">
-         <a :href="item.link" target="_blank" rel="noopener noreferrer">{{item.text}}</a>
-      </li>
-      <li v-for="item in content.footer.contacts" :key="item._id">
-        <a :href="'tel:' + item.phone">{{ item.phone }}</a>
-     </li>
-     </ul>
-     <div v-for="item in content.section" :key="item._id" class="section">
-       <h3>{{ item.title }}</h3>
-      <div v-for="el in item.items" :key="el._id">
-         {{ el.title }}
-         {{ el.description }}
-         <img v-if="el.file" width="200px" :src="`/images/${el.file}`" :alt="el.file" />
-      </div>
-     </div>
-   </template>
+  <template v-if="contentStore.content.section?.length">
+    <div v-for="(section) in contentStore.content.section" :key="section._id">
+      <Block :section="section" ></Block>
+    </div>
+  </template>
+   
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import type { IAllItems } from '~/interface';
 import { type IContent } from '~/interface/index';
+import { useContentStore } from '~/stores/contents';
+
+const contentStore = useContentStore()
 
 
-const content = ref<IContent>()
-await useFetch<IAllItems>('/api/content').then((response) => {
+useAsyncData(async() => {
+  await useFetch<IAllItems>('/api/content').then((response) => {
     if (response.data && response.data.value && response.data.value.data) {
       // Присваиваем данные переменной content
-      content.value = response.data.value.data;
+      contentStore.setContent( response.data.value.data);
     } else {
       console.error('No data received from the API');
     }
   }).catch((error) => {
     console.error('Error fetching data:', error);
  });
+})
+
 
 
 </script>
