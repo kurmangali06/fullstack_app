@@ -45,14 +45,16 @@
                       :auto-size="{ minRows: 2, maxRows: 5 }"
                     />
                   </a-form-item>
-                  <a-form-item class="wrapper" v-if="item.images.length">
-                    <div  v-for="el in item.images" :key="el" class="containerImage">
-                      <img :src="`images/${el}`" class="image" >
-                      <DeleteOutlined
-                        style=" color: red"
-                        class="containerImage__deletes"
-                        @click.stop="removeImage(el, index)"
-                      />
+                  <a-form-item v-if="item.images.length">
+                    <div class="listImage" >
+                      <div   v-for="el in item.images" :key="el"  class="containerImage">
+                        <img :src="`images/${el}`" class="image" >
+                        <DeleteOutlined
+                          style=" color: red"
+                          class="containerImage__deletes"
+                          @click.stop="removeImage(el, index)"
+                        />
+                      </div>
                     </div>
                   </a-form-item>
                   <a-form-item class="wrapper">
@@ -83,7 +85,7 @@
                             />
                           </a-form-item>
                           <a-form-item label="описание блока">
-                            <a-input
+                            <a-textarea
                               v-model:value="el.description"
                               placeholder="please input title"
                               style="width: 80%; margin-right: 8px"
@@ -267,12 +269,12 @@ function removeSection(item: ISection) {
 function addSection() {
   const _id = crypto.randomUUID();
   formState.section.push({
-    _id,
-    title: "",
-    items: [],
-    description: "",
-    images: [],
-
+  _id,
+  title: "",
+  items: [],
+  description: "",
+  images: [],
+  navigate: ""
 });
 }
 
@@ -311,6 +313,13 @@ await useFetch<IAllItems>("/api/content").then((response) => {
   align-items: center;
   justify-content: center;
 }
+.listImage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
 
 .card {
   display: flex;
@@ -343,6 +352,7 @@ await useFetch<IAllItems>("/api/content").then((response) => {
   width: 200px;
   height: 200px;
   border-radius: 20px;
+
 }
 
 .containerImage {

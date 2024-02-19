@@ -16,9 +16,13 @@ const route = useRoute()
   display: flex;
   flex-direction: column;
   max-width: 1440px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 10px auto;
   background-color: #fff;
   height: 100vh;
+  @media (max-width: 1024px) {
+    max-width: 1024px;
+}
   &__body {
     flex-grow: 1;
     height: fit-content;

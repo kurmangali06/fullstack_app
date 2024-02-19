@@ -14,3 +14,18 @@ export const listType: SelectProps['options'] =  [
         label: 'инстаграмм',
       },
 ]
+
+export const listLang =  [
+    {
+      value: 'RU',
+      label: 'RU',
+    },
+    {
+      value: 'KZ',
+      label: 'KZ',
+    },
+    {
+      value: 'EN',
+      label: 'EN',
+    },
+]

@@ -1,48 +1,50 @@
 <template>
     <footer class="footer">
         <div class="footer__content">
-            <img src="/images/Logo.png" alt="logo">
+            <div class="footer__content__logo">
+                <img src="/images/LogoWhile.png" alt="logo">
+            </div>
             <div class="footer__content__info">
-                <div v-if="contacts?.length" class="footer__content__info__contact">
-                    <h4>Контакты:</h4>
-                    <ul class="footer__content__info__contact__list">
-                        <li v-for="item in contacts" :key="item._id">
-                            <a :href="`tel:${item.phone}`"> {{ item.phone }}</a>
-                        </li>
-                    </ul>
-                    <h4>АДРЕС:</h4>
-                    <ul class="footer__content__info__contact__list">
-                        <li v-for="item in adress" :key="item._id">
-                            {{ item.street }}
-                        </li>
-                    </ul>
+                <div class="wrapper">
+                    <div v-if="contacts?.length" class="footer__content__info__contact">
+                        <h4>Контакты:</h4>
+                        <ul class="footer__content__info__contact__list">
+                            <li v-for="item in contacts" :key="item._id">
+                                <a :href="`tel:${item.phone}`"> {{ item.phone }}</a>
+                            </li>
+                        </ul>
+                        <h4 style="margin-top: 16px;">АДРЕС:</h4>
+                        <ul class="footer__content__info__contact__list">
+                            <li v-for="item in adress" :key="item._id">
+                                {{ item.street }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer__content__info__website">
+                        <ul class="footer__content__info__website__list">
+                            <li v-for="item in urls" :key="item._id"
+                                class="footer__content__info__website__list__item">
+                                <div>
+                                    <h4>{{typeText(item.type)}}:</h4>
+                                    <a :href="item.type === 'email' ? 'mailto:' + item.link : item.link" target="_blank"> {{ item.text }}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="footer__content__info__website">
-                    <ul class="footer__content__info__website__list">
-                        <li v-for="item in urls" :key="item._id"
-                            class="footer__content__info__website__list__item">
-                            <component :is="typeLinks(item.type)"/>
-                            <div>
-                                <h4>{{typeText(item.type)}}:</h4>
-                                <a :href="item.type === 'email' ? 'mailto:' + item.link : item.link" target="_blank"> {{ item.text }}</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="footer__content__info__menu" >
-                    <a :href="`#${item._id}`" v-for="item in menu" :key="item._id"> {{ item.title.toLocaleUpperCase() }}</a>
+
+                <div  v-if="screenWidth >= 763" class="footer__content__info__menu" >
+                    <h4>Навигация:</h4>
+                    <a :href="`#${item._id}`" v-for="item in menu" :key="item._id"> {{ item.navigate }}</a>
+                    <a href="#service" > cервис</a>
                 </div>
             </div>
+            <p>© {{new Date().getFullYear()}} Baibolsyn Solutions</p>
         </div>
     </footer>
 </template>
 <script setup lang="ts">
 import { useContentStore } from "~/stores/contents";
-import {
-    MailOutlined,
-    LinkOutlined,
-    InstagramOutlined
-} from '@ant-design/icons-vue';
 
 const contentStore = useContentStore()
 const menu = computed(() => {
@@ -69,19 +71,7 @@ const urls = computed(() => {
     return []
 })
 
-const typeLinks = computed(() => {
-    return (type: string) => {
-        switch (type) {
-            case 'web':
-              return LinkOutlined
-            case 'email':
-             return MailOutlined
-            case 'instagram':
-             return InstagramOutlined
-        }
-    }
-})
-
+const screenWidth = ref(0);
 const typeText = computed(() => {
     return (type: string) => {
         switch (type) {
@@ -94,36 +84,71 @@ const typeText = computed(() => {
         }
     }
 })
+onMounted(() => {
+    screenWidth.value = window.innerWidth;
+    window.addEventListener("resize", () => {
+        screenWidth.value = window.innerWidth;
+    });
+});
 </script>
 <style lang="scss" scoped>
     .footer {
         padding: 20px auto;
         padding-bottom: 20px;
         flex-grow: 0;
-        background-color: green;
+        background-color:  #1C1C1C;
+
         &__content {
             padding-top: 20px;
-            width: 800px;
-            margin: 0 auto;
+            margin: 36px 72px;
+            @media (max-width: 762px) {
+                margin:25px  16px;
+            }
+            &__logo {
+                @media (max-width: 762px) {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
             img {
                 width: 200px;
                 color: #ffff;
+            
             }
             &__info {
                 display: flex;
                 color: #fff; 
                 justify-content: space-between;
-                margin-top: 40px;
+                margin-top: 20px;
+                padding-bottom: 24px;
+                border-bottom: 1px solid #Ffff;
+                @media (max-width: 762px) {
+                    flex-direction: column;
+                    justify-content: center;
+                }
                 &__contact {
                     display: flex;
                     flex-direction: column;
                     h4 {
-                        margin-top: 10px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 16px;
+                        letter-spacing: 0em;
+                        text-align: left;
+                        color: #AAAAAA;
+  
                     }
                     &__list {
                         list-style-type:  none;
                         a {
                             color: #fff;
+                            font-size: 16px;
+                            font-weight: 500;
+                            line-height: 19px;
+                            letter-spacing: 0em;
+                            text-align: left;
+                            text-decoration: none;
                         }
                     }
                 }
@@ -131,8 +156,22 @@ const typeText = computed(() => {
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
+                    h4 {
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 16px;
+                        letter-spacing: 0em;
+                        text-align: left;
+                        color: #AAAAAA; 
+                    }
                     a {
                         color: #fff;
+                        font-size: 16px;
+                        font-weight: 500;
+                        line-height: 19px;
+                        letter-spacing: 0em;
+                        text-align: left;
+                        text-decoration: none;
                     }
                 }
                 &__website {
@@ -149,14 +188,46 @@ const typeText = computed(() => {
                                 display: flex;
                                 flex-direction: column;
                                 gap: 5px;
+                                h4 {
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    line-height: 16px;
+                                    letter-spacing: 0em;
+                                    text-align: left;
+                                    color: #AAAAAA; 
+                                }
                                 a {
                                     color: #fff;
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    line-height: 19px;
+                                    letter-spacing: 0em;
+                                    text-align: left;
+                                    text-decoration: none;
+                                    cursor: pointer;
                                 }
                             }
                         }
                     }
                 }
             }
+            p {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 24px;
+                margin-bottom: 36px;
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 16px;
+                letter-spacing: 0em;
+                color: #AAAAAA;
+
+            }
         }
+    }
+    .wrapper{
+        display: flex;
+        gap: 48px;
     }
 </style>

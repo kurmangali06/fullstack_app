@@ -1,5 +1,5 @@
 <template>
-    <div  class="card" >
+    <div  class="card"   :style="{ width }">
         <h5>{{item.title}}</h5>
         <p>{{item.description}}</p>
     </div>
@@ -14,15 +14,30 @@ const props = defineProps({
         type: Object as PropType<IBlock>,
         required: true,            
     },
+    width: {
+        type: String,
+        default: '0%'
+    }
 })
 
 </script>
 <style lang="scss" scoped>
     .card {
-        margin: 20px auto;
         display: flex;
         flex-direction: column;
         gap: 10px;
+        flex-shrink: 0; 
+        h5 {
+            font-weight: 700;
+            font-size: 24px;
+            @media (max-width: 1024px) { 
+                font-size: 20px;
+            }
+        }
+        p {
+            font-weight: 500;
+            font-size: 16px;
+        }
     }
 
 </style>
