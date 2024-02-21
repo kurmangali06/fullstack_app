@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: [
     '@ant-design-vue/nuxt',
     '@pinia/nuxt',
+    '@nuxtjs/i18n',
   ],
   css: [
     '@/styles/main.css',
@@ -20,5 +21,23 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ['./stores/**',],
   },
-
+  i18n: {
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'ru',
+        name: 'Русский',
+      },
+      {
+        code: 'en',
+        name: 'English',
+      },
+      {
+        code: 'kz',
+        name: 'Казакша',
+      },
+    ],
+    vueI18n: './i18n.config.ts',
+    differentDomains: false,
+  },
 })

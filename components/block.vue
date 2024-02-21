@@ -2,13 +2,13 @@
     <div :id="props.section._id" class="block" :class="{ 'block_one': section.images.length === 1 }">
         <div class="block__info" >
             <div class="block__info__title">
-                <p class="btn-navigate">{{ section.navigate }}</p>
+                <p class="btn-navigate">{{ section[`navigate_${locale}`] }}</p>
                 <component :is="randomIcon" /> 
             </div>
 
             <div class="block__info__main" :class="{ 'block_one__info': section.images.length === 1 }">
-                <h2>{{ section.title }}</h2>
-                <p>{{ section?.description }}</p>
+                <h2>{{  section?.[`title_${locale}`]}}</h2>
+                <p>{{ section?.[`description_${locale}`] }}</p>
             </div>
         </div>
         <template v-if="section.images.length">
@@ -41,7 +41,7 @@ const props = defineProps({
         required: true,
     },
 });
-
+const { locale } = useI18n() 
 const randomIcon = computed(() =>  {
     return Math.random() < 0.5 ? CpuIcon : LogoIcon;
 }
@@ -52,7 +52,15 @@ const screenWidth = computed(() => {
 const checkCountImages = computed(() => {
     return (count: number) => {
         if(screenWidth.value <= 762) {
-            return "384px";
+            switch (count) {
+                case 1:
+                    return "80%";
+                case 2:
+                case 3:
+                default:
+                    return "300px";
+            }
+            
         }
          else if (screenWidth.value <= 1024) {
             switch (count) {
@@ -84,8 +92,15 @@ const checkCountImages = computed(() => {
 .block {
     margin: 72px auto;
     min-height: 300px;
+    max-width: 1440px;
+    width: 90%;
     @media (max-width: 1024px) {
-        margin: 60px 30px;
+        margin: 60px auto;
+        max-width: 1024px;
+    }
+    @media (max-width: 762px) {
+        margin: 30px auto;
+        max-width: 762px;
     }
     &__info {
         width: 100%;
@@ -97,12 +112,14 @@ const checkCountImages = computed(() => {
         }
         &__title{
             display: flex;
+            padding: 0 30px;
         }
         &__main {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-top: 16px;
+            padding: 0 30px;
             @media (max-width: 762px) {
                 display: flex;
                 flex-direction: column;
@@ -136,7 +153,7 @@ const checkCountImages = computed(() => {
                     font-size: 16px;
                 }
                 @media (max-width: 762px) {
-                    width: 343px;
+                    width: 300px;
                     text-align: center;
                     font-size: 16px;
                 }
@@ -156,6 +173,8 @@ const checkCountImages = computed(() => {
         margin-top: 32px;
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
         gap: 6px;
         @media (max-width: 1024px) { 
             align-items: center;

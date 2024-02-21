@@ -1,14 +1,14 @@
 <template>
     <div  class="card"   :style="{ width }">
-        <h5>{{item.title}}</h5>
-        <p>{{item.description}}</p>
+        <h5>{{item[`title_${locale}`]}}</h5>
+        <p>{{item[`description_${locale}`]}}</p>
     </div>
 </template>
 <script setup lang="ts">
 import { defineProps} from 'vue'
 import { type IBlock } from '~/interface/index'
 
-
+const { locale } = useI18n()
 const props = defineProps({
     item: {
         type: Object as PropType<IBlock>,

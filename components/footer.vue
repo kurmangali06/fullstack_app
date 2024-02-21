@@ -6,15 +6,16 @@
             </div>
             <div class="footer__content__info">
                 <div class="wrapper">
-                    <div v-if="contacts?.length" class="footer__content__info__contact">
-                        <h4>Контакты:</h4>
+                    <div v-if="contacts?.length || adress.length" class="footer__content__info__contact">
+                        <h4>{{ $t('contacts') }}:</h4>
                         <ul class="footer__content__info__contact__list">
                             <li v-for="item in contacts" :key="item._id">
                                 <a :href="`tel:${item.phone}`"> {{ item.phone }}</a>
                             </li>
                         </ul>
-                        <h4 style="margin-top: 16px;">АДРЕС:</h4>
+                        <h4 style="margin-top: 16px;">{{ $t('address') }}:</h4>
                         <ul class="footer__content__info__contact__list">
+                            
                             <li v-for="item in adress" :key="item._id">
                                 {{ item.street }}
                             </li>
@@ -34,9 +35,9 @@
                 </div>
 
                 <div  v-if="screenWidth >= 763" class="footer__content__info__menu" >
-                    <h4>Навигация:</h4>
-                    <a :href="`#${item._id}`" v-for="item in menu" :key="item._id"> {{ item.navigate }}</a>
-                    <a href="#service" > cервис</a>
+                    <h4> {{ $t('navigation') }}:</h4>
+                    <a :href="`#${item._id}`" v-for="item in menu" :key="item._id"> {{ item[`navigate_${locale}`] }}</a>
+                    <a href="#service" > {{ $t('service') }}</a>
                 </div>
             </div>
             <p>© {{new Date().getFullYear()}} Baibolsyn Solutions</p>
@@ -46,6 +47,7 @@
 <script setup lang="ts">
 import { useContentStore } from "~/stores/contents";
 
+const { t, locale } = useI18n()
 const contentStore = useContentStore()
 const menu = computed(() => {
     if(contentStore.content.section) 
@@ -76,11 +78,11 @@ const typeText = computed(() => {
     return (type: string) => {
         switch (type) {
             case 'web':
-              return 'Сайт'
+              return t('web')
             case 'email':
              return 'E-mail'
             case 'instagram':
-             return 'Instagram'
+             return t('instagram')
         }
     }
 })
@@ -93,16 +95,22 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
     .footer {
-        padding: 20px auto;
-        padding-bottom: 20px;
         flex-grow: 0;
         background-color:  #1C1C1C;
 
         &__content {
             padding-top: 20px;
-            margin: 36px 72px;
+            margin: 36px auto;
+            max-width: 1440px;
+            overflow-x: hidden; 
+            width: 90%;
+            @media (max-width: 1024px) {
+                margin: 60px auto;
+                max-width: 1024px;
+            }
             @media (max-width: 762px) {
-                margin:25px  16px;
+                margin: 25px  auto;
+                max-width: 762px;
             }
             &__logo {
                 @media (max-width: 762px) {

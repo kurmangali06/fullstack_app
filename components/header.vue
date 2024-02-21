@@ -3,27 +3,32 @@
         <div class="header__main">
             <div class="header__main__logo">
                 <img src="/images/Logo.png" alt="logo" />
-                {{ screenWidth }}
                 <nav
                     class="header__main__menu"
-                    v-if="menu?.length && screenWidth >= 1024"
+                    v-if="menu?.length && screenWidth >= 763"
                     >
                     <a
                         :href="`#${item._id}`"
                         v-for="item in menu"
                         :key="item._id"
                     >
-                        {{ item.navigate }}</a
+                        {{ item[`navigate_${locale}`] }}</a
                     >
-                    <a href="#service"> cервис</a>
+                    <a href="#service">  {{ $t('service') }}</a>
                 </nav>
+                <svg @click="showMenu = true" class="menu"  v-if="menu?.length && screenWidth <= 762"  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M3 12H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M3 17H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                    
             </div>
             <div class="header__main__info">
-                <h3>{{ header?.subtitle }}</h3>
-                <h1>{{ header?.title }}</h1>
-                <p>{{ header?.description }}</p>
+                <h3>{{ header?.[`subtitle_${locale}`] }}</h3>
+                <h1>{{ header?.[`title_${locale}`] }}</h1>
+                <p>{{ header?.[`description_${locale}`] }}</p>
                 <div v-if="screenWidth >= 763" class="btn">
-                    <a href="#service" class="btn-navigate">оставить заявку</a>
+                    <a href="#service" class="btn-navigate">{{  $t('submitApplication')}}</a>
                     <div class="icon">
                         <svg
                             width="24"
@@ -57,12 +62,25 @@
             class="header__bg"
             :style="`background-image: url('images/bg.png'); background-repeat: no-repeat; background-size: cover; background-position: center;`"
         >
-            <a-select
-                v-if="screenWidth >= 763"
-                class="header__bg__lang"
-                v-model="curentLang"
-                :options="listLang"
-            ></a-select>
+        <a-dropdown  class="lang"  v-if="screenWidth >= 763" :trigger="['click']" arrow>
+            <a class="ant-dropdown-link" @click.prevent>
+                {{ locale }}
+              <DownOutlined />
+            </a>
+            <template #overlay>
+              <a-menu>
+                <a-menu-item key="0" @click="setLocale('ru')">
+                  ru
+                </a-menu-item>
+                <a-menu-item key="1" @click="setLocale('en')">
+                    en
+                </a-menu-item>
+                <a-menu-item key="1" @click="setLocale('kz')">
+                    kz
+                </a-menu-item>
+              </a-menu>
+            </template>
+        </a-dropdown>
         </div>
         <div v-if="screenWidth <= 762" class="btn">
             <a href="#service" class="btn-navigate">оставить заявку</a>
@@ -94,16 +112,15 @@
             </div>
         </div>
     </header>
+    <Menu v-if="showMenu" v-model="showMenu" :menu="menu"/>
 </template>
 <script setup lang="ts">
-import { listLang } from "~/helpers/constants";
 import { useContentStore } from "~/stores/contents";
 
 const contentStore = useContentStore();
-const curentLang = ref(  {
-      value: 'RU',
-      label: 'RU',
-    },);
+
+const { locale, setLocale } = useI18n()
+const showMenu = ref(false) 
 const menu = computed(() => {
     if (contentStore.content.section) return contentStore.content.section;
     return [];
@@ -123,9 +140,19 @@ onMounted(() => {
 .header {
     padding: 12px;
     display: flex;
+    max-width: 1440px;
+    width: 90%;
+    margin: 0 auto;
+    @media (max-width: 1024px) {
+      max-width: 1024px;
+    } 
     flex-grow: 0;
     @media (max-width: 762px) {
         flex-direction: column;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        max-width: 1024px;
     }
     &__main {
         width: 625px;
@@ -135,14 +162,15 @@ onMounted(() => {
             width: 488px;
             margin-left: 16px;
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 762px) {
             width: 100%;
+            margin-left: 0;
         }
         &__menu {
-            display: flex;
-            justify-content: space-between;
-            margin: 0 auto;
-            width: 440px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 440px;
             padding: 10px;
             @media (max-width: 1024px) {
                 width: 322px;
@@ -165,6 +193,7 @@ onMounted(() => {
                 @media (max-width: 762px) {
                     width: 80px;
                     height: 23px;
+                    margin-left: 16px;
                 }
 
             }
@@ -174,11 +203,15 @@ onMounted(() => {
             flex-direction: column;
             align-items: flex-start;
             margin-top: 100px;
+            padding-left: 30px;
             @media (max-width: 1024px) {
                 margin-top: 86px;
+                padding-left: 0;
             }
             @media (max-width: 762px) {
-                margin-top: 24px;
+                max-width: 300px;
+                margin: 24px auto;
+                justify-content: center;
             }
             h3 {
                 font-weight: 600;
@@ -190,7 +223,7 @@ onMounted(() => {
                 @media (max-width: 762px) {
                     font-size: 12px;
                     text-align: center;
-                    width: 300px;
+
                 }
             }
             h1 {
@@ -201,7 +234,6 @@ onMounted(() => {
                     font-size: 50px;
                 }
                 @media (max-width: 762px) {
-                    width: 343px;
                     text-align: center;
                     font-size: 30px;
                     
@@ -216,8 +248,8 @@ onMounted(() => {
                     font-size: 14px;
                 }
                 @media (max-width: 762px) {
-                    margin-top: 8px;
-                    width: 343px;
+                    margin: 8px auto;
+            
                 }
             }
 
@@ -229,16 +261,16 @@ onMounted(() => {
         width: 694px;
         flex-grow: 1;
         height: 735px;
+        margin-right: 30px;
         position: relative;
         @media (max-width: 1024px) {
             width: 100%;
             height: 549px;
         }
         @media (max-width: 762px) {
-            margin-top: 16px;
-            width: 100%;
+            max-width: 90%;
             height: 197px;
-            margin-left: 10px;
+            margin-right: 0;
         }
         &__lang {
             position: absolute;
@@ -256,5 +288,20 @@ onMounted(() => {
         align-items: center;
         justify-content: center;
     }
+}
+.menu {
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 26px;
+}
+.lang {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
 }
 </style>

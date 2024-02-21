@@ -24,22 +24,41 @@ export interface IFooter {
     adress: IAdress[]
 }
 export interface IBlock {
-    title: string
     _id:  string
-    description: string
+    title_en: string
+    title_ru: string
+    title_kz: string
+    description_en: string
+    description_ru: string
+    description_kz: string
+    [key: string]: any
 }
 export  interface ISection {
-    navigate: string
-    title: string
-    description: string
+    navigate_en: string
+    navigate_ru: string
+    navigate_kz: string
+    title_en: string
+    title_ru: string
+    title_kz: string
+    description_en: string
+    description_ru: string
+    description_kz: string
     _id:  string
     images: string[]
     items:IBlock[]
+    [key: string]: any
 }
 export interface IHeader {
-    title: string
-    description: string
-    subtitle: string
+    title_en: string
+    title_ru: string
+    title_kz: string
+    description_en: string
+    description_ru: string
+    description_kz: string
+    subtitle_en: string
+    subtitle_ru: string
+    subtitle_kz: string
+    [key: string]: any
 }
 export interface IContent {
     footer: IFooter

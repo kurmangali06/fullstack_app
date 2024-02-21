@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
         const { username, password } = await readBody(event)
         if (!username || !password) {
             return setResponse(event, { statusCode: 400, statusMessage: 'Authentication failed' })
-        } else if (username === 'test@test' && password === 'password') {
+        } else if (username === 'admin' && password === 'admin') {
             return setResponse(event, { statusCode: 200, statusMessage: 'Authentication successful', data: true })
         }
     } catch (error: unknown) {
