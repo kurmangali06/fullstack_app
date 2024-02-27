@@ -9,8 +9,8 @@ export default async () => {
 
     await mongoose.connect(config.apiSecret.MONGO_URL);
     const admin = {
-      username: 'admin',
-      password: 'admin'
+      username: 'adminbbs',
+      password: '230523'
   };
   
   (async () => {
