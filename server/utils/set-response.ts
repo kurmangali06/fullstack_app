@@ -1,5 +1,5 @@
 import { H3Event } from 'h3'
-import { ISetResponse } from '~/interface'
+import type { ISetResponse } from '~/interface'
 
 
 const setResponse = (event: H3Event, responseData: ISetResponse) => {

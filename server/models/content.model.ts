@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { IContent } from "~/interface"
+import type { IContent } from "~/interface"
 
 
 const schema = new mongoose.Schema<IContent>({

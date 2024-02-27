@@ -1,4 +1,4 @@
-import jwt, { JwtPayload, Jwt } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export default defineEventHandler(async (event) => {
   const secret =  process.env.token;

@@ -345,9 +345,9 @@ let formState = reactive<IContent>({
         keywords: "",
     },
 });
-const token = computed (() => {
-    return localStorage.getItem('auth-token')
-})
+const token = computed(() => {
+    return localStorage.getItem("auth-token") || "";
+});
 const btnText = computed(() => {
     return formState._id ? "Обновить" : "Сохранить";
 });
@@ -393,7 +393,7 @@ function handleUploadSuccess(res: any, index: number) {
 
 async function submitForm() {
     if (formRef.value) {
-        let formData = { ...formState };
+        let formData:IContent = { ...formState };
         formRef.value
             .validate()
             .then(async () => {
@@ -401,18 +401,21 @@ async function submitForm() {
                     await $fetch("/api/content", {
                         method: "put",
                         headers: {
-                            authentication: token.value ,
-                            'Content-Type': 'application/json',
+                            authentication: token.value,
+                            "Content-Type": "application/json",
                         },
                         body: formData,
                     });
                 } else {
-                    delete formData._id;
+                    if ("_id" in formData) {
+                        delete formData._id;
+                    }
+
                     await $fetch("/api/content", {
                         method: "post",
                         headers: {
                             authentication: token.value,
-                            'Content-Type': 'application/json',
+                            "Content-Type": "application/json",
                         },
                         body: formData,
                     });
@@ -445,7 +448,7 @@ function removeSection(item: ISection) {
                 path: e,
             };
             try {
-                 useFetch("/api/upload", {
+                useFetch("/api/upload", {
                     method: "delete",
                     body: formData,
                 });

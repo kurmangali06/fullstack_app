@@ -10,7 +10,7 @@
                         <h4>{{ $t('contacts') }}:</h4>
                         <ul class="footer__content__info__contact__list">
                             <li v-for="item in contacts" :key="item._id">
-                                <a :href="`tel:${item.phone}`"> {{ item.phone }}</a>
+                                <a :href="`tel:${item.phone}`"> {{item.phone }}</a>
                             </li>
                         </ul>
                         <h4 style="margin-top: 16px;">{{ $t('address') }}:</h4>
@@ -86,6 +86,8 @@ const typeText = computed(() => {
         }
     }
 })
+
+
 
 
 onMounted(() => {

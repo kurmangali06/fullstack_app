@@ -71,7 +71,7 @@ export interface IContent {
     section: ISection[]
     header: IHeader
     meta: IMeta
-    _id:  string
+    _id?:  string
 }
 
 export interface ISetResponse {

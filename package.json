@@ -7,13 +7,15 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@ant-design-vue/nuxt": "^1.4.1",
     "@pinia/nuxt": "^0.5.1",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
+    "maska": "1.5.0",
     "mongodb": "^6.3.0",
     "multer": "1.4.5-lts.1",
     "normalize.css": "^8.0.1",
@@ -22,7 +24,8 @@
     "v-mask": "^2.3.0",
     "vue": "^3.4.15",
     "vue-draggable-next": "^2.2.1",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.27"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "^8.1.1",

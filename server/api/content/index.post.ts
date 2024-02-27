@@ -1,7 +1,7 @@
 import contentModel from "../../models/content.model"
 import setResponse from "~/server/utils/set-response";
 import { Error } from "mongoose"
-import { IContent, IUser } from "~/interface";
+import type { IContent } from "~/interface";
 import userModel from "~/server/models/user.model";
 
 export default defineEventHandler(async (event) => {

@@ -78,6 +78,7 @@ function closeMenu () {
         bottom: 0;
         right: 0;
         padding: 0;
+        z-index: 1;
         width: 148px;
         background-color: #1C1C1C;
         &__close {

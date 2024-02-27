@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser } from "~/interface";
+import type { IUser } from "~/interface";
 
 const schema = new mongoose.Schema<IUser>({
     username: { type: String, required: true, default: 'admin' },

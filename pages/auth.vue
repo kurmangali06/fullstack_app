@@ -40,7 +40,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { reactive, watch } from "vue";
+import { reactive } from "vue";
 import { message } from "ant-design-vue";
 import { useRouter } from 'vue-router'
 
@@ -48,7 +48,7 @@ interface FormState {
     username: string;
     password: string;
 }
-const authStore = useAuthStore();
+
 const router = useRouter();
 const formState = reactive<FormState>({
     username: "",
@@ -77,12 +77,6 @@ const onFinish = async (values: any) => {
     }
 };
 
-watch(
-    () => authStore.isAuth,
-    () => {
-        if (authStore.isAuth) router.push("/admin");
-    }
-);
 
 const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
