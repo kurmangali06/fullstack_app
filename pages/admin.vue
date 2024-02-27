@@ -8,6 +8,7 @@
             style="width: 80%; margin: 0 auto"
             autocomplete="off"
         >
+            <AdminMeta v-model="formState.meta" />
             <AdminHeader v-model="formState.header" />
             <a-divider dashed plain orientation="left"
                 ><a-typography-title :level="5"
@@ -311,26 +312,26 @@ import { VueDraggableNext } from "vue-draggable-next";
 import { message } from "ant-design-vue";
 
 definePageMeta({
-  middleware: 'auth'
-})
+    middleware: "auth",
+});
 
 const formRef = ref<FormInstance>();
 const fileList = ref<File[]>([]);
 let formState = reactive<IContent>({
     header: {
-    title: "",
-    description: "",
-    subtitle: "",
-    title_en: "",
-    title_ru: "",
-    title_kz: "",
-    description_en: "",
-    description_ru: "",
-    description_kz: "",
-    subtitle_en: "",
-    subtitle_ru: "",
-    subtitle_kz: ""
-},
+        title: "",
+        description: "",
+        subtitle: "",
+        title_en: "",
+        title_ru: "",
+        title_kz: "",
+        description_en: "",
+        description_ru: "",
+        description_kz: "",
+        subtitle_en: "",
+        subtitle_ru: "",
+        subtitle_kz: "",
+    },
     footer: {
         links: [],
         contacts: [],
@@ -338,21 +339,28 @@ let formState = reactive<IContent>({
     },
     section: [],
     _id: "",
+    meta: {
+        title: "",
+        description: "",
+        keywords: "",
+    },
 });
-
+const token = computed (() => {
+    return localStorage.getItem('auth-token')
+})
 const btnText = computed(() => {
     return formState._id ? "Обновить" : "Сохранить";
 });
 
 async function deleteImage(file: any, index: number) {
     formState.section[index].images = formState.section[index].images.filter(
-        (e) => e !== file.name
+        (e: any) => e !== file.name
     );
     const formData = {
         path: file.name,
     };
     try {
-        const { status } = await useFetch("/api/upload", {
+        await useFetch("/api/upload", {
             method: "delete",
             body: formData,
         });
@@ -362,13 +370,13 @@ async function deleteImage(file: any, index: number) {
 }
 async function removeImage(el: string, index: number) {
     formState.section[index].images = formState.section[index].images.filter(
-        (e) => e !== el
+        (e: any) => e !== el
     );
     const formData = {
         path: el,
     };
     try {
-        const { status } = await useFetch("/api/upload", {
+        await useFetch("/api/upload", {
             method: "delete",
             body: formData,
         });
@@ -392,12 +400,20 @@ async function submitForm() {
                 if (formState._id) {
                     await $fetch("/api/content", {
                         method: "put",
+                        headers: {
+                            authentication: token.value ,
+                            'Content-Type': 'application/json',
+                        },
                         body: formData,
                     });
                 } else {
                     delete formData._id;
                     await $fetch("/api/content", {
                         method: "post",
+                        headers: {
+                            authentication: token.value,
+                            'Content-Type': 'application/json',
+                        },
                         body: formData,
                     });
                 }
@@ -406,7 +422,7 @@ async function submitForm() {
                 message.success("Успешно добавлено");
             })
             .catch((error: any) => {
-                message.error(error.message);
+                message.error(error.statusMessage);
             })
             .finally(() => {
                 formRef.value?.resetFields();
@@ -420,6 +436,24 @@ function removeChild(el: IBlock, i: number, childIndex: number) {
 }
 
 function removeSection(item: ISection) {
+    const deleteElement = formState.section.find(
+        (e: ISection) => e._id === item._id
+    );
+    if (deleteElement) {
+        deleteElement.images.forEach(async (e) => {
+            const formData = {
+                path: e,
+            };
+            try {
+                 useFetch("/api/upload", {
+                    method: "delete",
+                    body: formData,
+                });
+            } catch (error) {
+                console.error("Произошла ошибка:", error);
+            }
+        });
+    }
     formState.section = formState.section.filter(
         (e: ISection) => e._id !== item._id
     );
@@ -428,37 +462,37 @@ function removeSection(item: ISection) {
 function addSection() {
     const _id = crypto.randomUUID();
     formState.section.push({
-    _id,
-    title: "",
-    items: [],
-    description: "",
-    images: [],
-    navigate: "",
-    navigate_en: "",
-    navigate_ru: "",
-    navigate_kz: "",
-    title_en: "",
-    title_ru: "",
-    title_kz: "",
-    description_en: "",
-    description_ru: "",
-    description_kz: ""
-});
+        _id,
+        title: "",
+        items: [],
+        description: "",
+        images: [],
+        navigate: "",
+        navigate_en: "",
+        navigate_ru: "",
+        navigate_kz: "",
+        title_en: "",
+        title_ru: "",
+        title_kz: "",
+        description_en: "",
+        description_ru: "",
+        description_kz: "",
+    });
 }
 
 function addChild(i: number) {
     const _id = crypto.randomUUID();
     formState.section[i].items.push({
-    _id,
-    title: "",
-    description: "",
-    title_en: "",
-    title_ru: "",
-    title_kz: "",
-    description_en: "",
-    description_ru: "",
-    description_kz: ""
-});
+        _id,
+        title: "",
+        description: "",
+        title_en: "",
+        title_ru: "",
+        title_kz: "",
+        description_en: "",
+        description_ru: "",
+        description_kz: "",
+    });
 }
 
 await useFetch<IAllItems>("/api/content").then((response) => {

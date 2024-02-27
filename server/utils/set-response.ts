@@ -3,7 +3,6 @@ import { ISetResponse } from '~/interface'
 
 
 const setResponse = (event: H3Event, responseData: ISetResponse) => {
-    console.log(event.node.res)
     event.node.res.statusCode = responseData.statusCode
     event.node.res.statusMessage = responseData.statusMessage
     if (responseData.data === undefined) {

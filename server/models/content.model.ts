@@ -4,6 +4,7 @@ import { IContent } from "~/interface"
 
 const schema = new mongoose.Schema<IContent>({
     section: [],
+    meta: {},
     footer : {
         links: [],
         contacts: [],

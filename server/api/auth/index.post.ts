@@ -1,16 +1,29 @@
-export default defineEventHandler(async (event) => { 
-    try {
-        const { username, password } = await readBody(event)
-        if (!username || !password) {
-            return setResponse(event, { statusCode: 400, statusMessage: 'Authentication failed' })
-        } else if (username === 'admin' && password === 'admin') {
-            return setResponse(event, { statusCode: 200, statusMessage: 'Authentication successful', data: true })
-        }
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return setResponse(event, { statusCode: 400, statusMessage: error.message })
-        }
-        return setResponse(event, { statusCode: 500, statusMessage: 'Something went wrong.' })
-    }
+import jwt from 'jsonwebtoken';
+import userModel from '../../models/user.model';
+import bcrypt from "bcrypt"
 
-})
+export default defineEventHandler(async (event) => { 
+    const body = await readBody(event);
+    const secret =  process.env.token;
+    const user = await userModel.findOne({ username: body.username });
+    if(!user) {
+        return  false
+      }
+
+      const isValidPass = await bcrypt.compare(body.password, user.password);
+      if(!isValidPass) {
+        return false
+      }
+      if(secret) {
+        const token = jwt.sign({
+          username: user.username,
+        },
+        'secret123',
+        {
+          expiresIn: '30d',
+        });
+        return token
+      }
+      return false
+
+});

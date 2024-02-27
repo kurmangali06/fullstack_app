@@ -1,8 +1,10 @@
 
-// ---cut---
 export default defineNuxtRouteMiddleware((to, from) => { 
-  const authStore = useAuthStore() 
-  if (!authStore.isAuth) {
-    return navigateTo('/auth')
-  } 
+  if (typeof window !== 'undefined' && window.localStorage) {
+    console.log(localStorage);
+    
+    if (!localStorage.getItem('auth-token')) {
+      return navigateTo('/auth')
+    } 
+  }
 })

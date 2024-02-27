@@ -204,6 +204,7 @@ onMounted(() => {
             align-items: flex-start;
             margin-top: 100px;
             padding-left: 30px;
+            max-width: 460px;
             @media (max-width: 1024px) {
                 margin-top: 86px;
                 padding-left: 0;

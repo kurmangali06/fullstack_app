@@ -3,7 +3,7 @@
         <img src="/images/Logo.png" alt="logo">
         <h2>{{  $t('submitApplicationTitle')}}</h2>
         <div>
-            <input type="text" style="margin-top: 32px;" :placeholder="$t('name') ">
+            <input type="text" style="margin-top: 32px;" :mask=" '(###)-###-####'" :placeholder="$t('name') ">
         </div>
         <input type="text" style="margin-top: 8px;" :placeholder="$t('phone') ">
         <input type="number" style="margin-top: 8px;" :placeholder="$t('subInfo') ">

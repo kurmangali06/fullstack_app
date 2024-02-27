@@ -41,6 +41,8 @@
 </template>
 <script lang="ts" setup>
 import { reactive, watch } from "vue";
+import { message } from "ant-design-vue";
+import { useRouter } from 'vue-router'
 
 interface FormState {
     username: string;
@@ -54,15 +56,25 @@ const formState = reactive<FormState>({
 });
 
 const onFinish = async (values: any) => {
-    console.log("Success:", values);
-    await $fetch("/api/auth", {
-        method: "post",
-        body: { ...values },
-    }).then((res) => {
-        if (typeof res === "object" && res && "data" in res) {
-            authStore.setAuth(res.data as boolean);
-        }
-    });
+    try {
+        const response = await $fetch("/api/auth", {
+            method: "post",
+            body: values,
+        });
+
+            if (response && typeof response !== 'boolean') {
+                localStorage.setItem('auth-token', JSON.stringify(`Bearer ${response}`))
+                router.push({
+                    name: 'admin'
+                })
+            } else {
+                message.error('Не верные данные');
+            }
+    
+    } catch (error) {
+        console.error('Ошибка при отправке запроса:', error);
+        message.error('Произошла ошибка при обработке запроса');
+    }
 };
 
 watch(

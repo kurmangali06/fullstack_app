@@ -6,7 +6,7 @@
             </div>
             <div class="footer__content__info">
                 <div class="wrapper">
-                    <div v-if="contacts?.length || adress.length" class="footer__content__info__contact">
+                    <div v-if="contacts.length || adress.length" class="footer__content__info__contact">
                         <h4>{{ $t('contacts') }}:</h4>
                         <ul class="footer__content__info__contact__list">
                             <li v-for="item in contacts" :key="item._id">
@@ -86,6 +86,8 @@ const typeText = computed(() => {
         }
     }
 })
+
+
 onMounted(() => {
     screenWidth.value = window.innerWidth;
     window.addEventListener("resize", () => {

@@ -42,8 +42,6 @@ const props = defineProps({
   },
 });
 let state = reactive<IHeader>({
-  title: "",
-  description: "",
   subtitle: "",
   title_en: "",
   title_ru: "",

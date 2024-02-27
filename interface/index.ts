@@ -60,10 +60,17 @@ export interface IHeader {
     subtitle_kz: string
     [key: string]: any
 }
+
+export interface IMeta {
+    title: string,
+    description: string
+    keywords: string
+}
 export interface IContent {
     footer: IFooter
     section: ISection[]
     header: IHeader
+    meta: IMeta
     _id:  string
 }
 
@@ -72,4 +79,9 @@ export interface ISetResponse {
     statusMessage: string
     data?: any,
     cause?: any
+}
+
+export interface IUser {
+    username: string
+    password: string
 }

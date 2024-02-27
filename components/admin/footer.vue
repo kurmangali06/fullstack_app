@@ -16,7 +16,7 @@
                     <div>
                       <a-form-item label="телефон">
                         <a-input
-                          v-model:value.number="tel.phone"
+                          v-model:value="tel.phone"
                           mask="'+7 (###) ###-##-##'"
                           type="tel"
                           style="width: 80%; margin-right: 8px"
