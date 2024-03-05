@@ -3,7 +3,7 @@
     <div v-for="(section) in contentStore.content.section" :key="section._id">
       <Block :section="section" ></Block>
     </div>
-    <Service/>
+    <!-- <Service/> -->
   </template>
    
 </template>

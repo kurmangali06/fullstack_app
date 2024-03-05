@@ -83,7 +83,7 @@
         </a-dropdown>
         </div>
         <div v-if="screenWidth <= 762" class="btn">
-            <a href="#service" class="btn-navigate">оставить заявку</a>
+            <a href="#service" class="btn-navigate">{{$t('submitApplication')}}</a>
             <div class="icon">
                 <svg
                     width="24"
