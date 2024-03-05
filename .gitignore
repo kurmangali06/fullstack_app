@@ -25,4 +25,4 @@ logs
 
 
 Dockerfile
-docker-compose
+docker-compose.yml
