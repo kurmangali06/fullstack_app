@@ -6,6 +6,10 @@
 .cache
 dist
 
+
+
+Dockerfile
+docker-compose.yml
 # Node dependencies
 node_modules
 
@@ -23,6 +27,3 @@ logs
 .env.*
 !.env.example
 
-
-Dockerfile
-docker-compose.yml
