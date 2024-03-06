@@ -36,7 +36,7 @@ useAsyncData(async () => {
 });
 
 useHead(() => ({
-    title: contentStore.content.meta.title,
+    title: contentStore.content.meta?.title,
     meta: [
         {
             key: "keywords",
