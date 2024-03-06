@@ -5,7 +5,7 @@
                 <img src="/images/Logo.png" alt="logo" />
                 <nav
                     class="header__main__menu"
-                    v-if="menu?.length && screenWidth >= 763"
+                    v-if="menu.length && screenWidth >= 763"
                     >
                     <a
                         :href="`#${item._id}`"

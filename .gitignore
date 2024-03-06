@@ -8,8 +8,6 @@ dist
 
 
 
-Dockerfile
-docker-compose.yml
 # Node dependencies
 node_modules
 
@@ -27,3 +25,6 @@ logs
 .env.*
 !.env.example
 
+# Docker
+Dockerfile
+docker-compose.yml
