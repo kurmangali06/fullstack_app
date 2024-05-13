@@ -27,7 +27,7 @@
                                 class="footer__content__info__website__list__item">
                                 <div>
                                     <h4>{{typeText(item.type)}}:</h4>
-                                    <a :href="item.type === 'email' ? 'mailto:' + item.link : item.link" target="_blank"> {{ item.text }}</a>
+                                    <NuxtLink  :to="item.type === 'email' ? 'mailto:' + item.link : item.link" target="_blank"> {{ item.text }}</NuxtLink>
                                 </div>
                             </li>
                         </ul>
@@ -100,7 +100,7 @@ onMounted(() => {
 <style lang="scss" scoped>
     .footer {
         flex-grow: 0;
-        background-color:  #1C1C1C;
+        background-color:  #043B40;
 
         &__content {
             padding-top: 20px;

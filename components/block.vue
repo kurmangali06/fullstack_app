@@ -1,92 +1,82 @@
 <template>
-    <div :id="props.section._id" class="block" :class="{ 'block_one': section.images.length === 1 }">
-        <div class="block__info" >
-            <div class="block__info__title">
-                <p class="btn-navigate">{{ section[`navigate_${locale}`] }}</p>
-                <component :is="randomIcon" /> 
-            </div>
-
-            <div class="block__info__main" :class="{ 'block_one__info': section.images.length === 1 }">
-                <h2>{{  section?.[`title_${locale}`]}}</h2>
-                <p>{{ section?.[`description_${locale}`] }}</p>
-            </div>
-        </div>
-        <template v-if="section.images.length">
+    <div :id="props.section._id" class="block">
+        <template v-if="props.number % 2 === 0 && screenWidth >= 763">
+            <!-- Если number четное -->
             <div class="block__images">
                 <img
-                    v-for="img in section.images"
+                    v-for="img in props.section.images"
                     :key="img"
-                    :class="{ 'block_one__info__img': section.images.length === 1 }"
                     :src="`images/${img}`"
                     class="image"
-                    :style="{ width: checkCountImages(section.images.length) }"
                     alt="фото"
                 />
             </div>
         </template>
-        <div class="block__list">
-            <Card v-for="el in section.items" :key="el._id" :item="el" :width=" checkCountImages(section.items.length)" />
+    
+        <div class="block__info" :class="{ 'block__reversed': props.number % 2 === 0 }" >
+            <div class="block__info__title" :class="{ 'block__reversed__title': props.number % 2 === 0  && screenWidth >= 763}">
+                <CpuIcon v-if="props.number % 2 !== 0 || screenWidth <= 763"/>
+                <p class="btn-navigate">{{ props.section[`navigate_${locale}`] }}</p>
+                <CpuIcon v-if="props.number % 2 === 0 && screenWidth >= 763"/>
+            </div>
+    
+            <div class="block__info__main" >
+                <h2>{{ props.section?.[`title_${locale}`] }}</h2>
+                <p>{{ props.section?.[`description_${locale}`] }}</p>
+            </div>
         </div>
+    
+        <template v-if="props.number % 2 !== 0">
+            <!-- Если number нечетное -->
+            <div class="block__images">
+                <img
+                    v-for="img in props.section.images"
+                    :key="img"
+                    :src="`images/${img}`"
+                    class="image"
+                    alt="фото"
+                />
+            </div>
+        </template>
+
+        <template v-if="props.number % 2 === 0 && screenWidth <= 763">
+            <!-- Если number четное -->
+            <div class="block__images">
+                <img
+                    v-for="img in props.section.images"
+                    :key="img"
+                    :src="`images/${img}`"
+                    class="image"
+                    alt="фото"
+                />
+            </div>
+        </template>
     </div>
 </template>
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import type { ISection } from "~/interface/index";
 import CpuIcon from './cpuIcon.vue';
-import LogoIcon from './logoIcon.vue';
 
 const props = defineProps({
     section: {
         type: Object as PropType<ISection>,
         required: true,
     },
+    number :{
+        type: Number,
+        required: true
+    }
 });
+const screenWidth = ref(0);
 const { locale } = useI18n() 
-const randomIcon = computed(() =>  {
-    return Math.random() < 0.5 ? CpuIcon : LogoIcon;
-}
-)
-const screenWidth = computed(() => {
-    return process.client ? window.innerWidth : 0;
-})
-const checkCountImages = computed(() => {
-    return (count: number) => {
-        if(screenWidth.value <= 762) {
-            switch (count) {
-                case 1:
-                    return "80%";
-                case 2:
-                case 3:
-                default:
-                    return "300px";
-            }
-            
-        }
-         else if (screenWidth.value <= 1024) {
-            switch (count) {
-                case 1:
-                    return "456px";
-                case 2:
-                    return "48%";
-                case 3:
-                default:
-                    return "24.6%";
-            }
-        } else  if (screenWidth.value > 1024){
-            switch (count) {
-                case 1:
-                    return "643px";
-                case 2:
-                    return "48%";
-                case 3:
-                case 4:
-                default:
-                    return "33%";
-            }
-        }
-    };
-});
 
+onMounted(() => {
+    screenWidth.value = window.innerWidth;
+    window.addEventListener("resize", () => {
+        screenWidth.value = window.innerWidth;
+    });
+});
 </script>
 <style lang="scss" scoped>
 .block {
@@ -94,125 +84,104 @@ const checkCountImages = computed(() => {
     min-height: 300px;
     max-width: 1440px;
     width: 90%;
+    display: flex;
+    gap: 90px;
     @media (max-width: 1024px) {
         margin: 60px auto;
         max-width: 1024px;
+        gap: 30px;
     }
-    @media (max-width: 762px) {
+    @media (max-width: 740px) {
         margin: 30px auto;
         max-width: 762px;
+        flex-direction: column;
     }
     &__info {
-        width: 100%;
+        width: 50%;
         @media (max-width: 762px) {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
         }
         &__title{
             display: flex;
-            padding: 0 30px;
+            gap: 8px;
+            margin-bottom: 32px;
         }
-        &__main {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 16px;
-            padding: 0 30px;
-            @media (max-width: 762px) {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
+        &__main {   
+            color: #043B40 ;
+            margin-left: 8px;
             h2 {
                 font-size: 40px;
                 font-weight: 700;
-                max-width: 481px;
-                @media (max-width: 1024px) { 
+                line-height: 53px;
+                margin-bottom: 8px;
+                @media (max-width: 1209px) { 
                     font-size: 32px;
-                    max-width: 358px;
                     line-height: 39px;
                     letter-spacing: 0em;
 
                 }
-                @media (max-width: 762px) {
-                    width: 262px;
-                    text-align: center;
+                @media (max-width: 900px) { 
+                    text-align: start;
                     font-size: 24px;
                 }
             }
             p {
-                max-width: 588px;
+                width: 100%;
                 font-size: 20px;
-                font-weight: 500;
+                font-weight: 500; 
+                word-wrap: break-word;
                 @media (max-width: 1024px) { 
-                    width: 331px;
-                    height: 114px;
                     font-size: 16px;
                 }
                 @media (max-width: 762px) {
-                    width: 300px;
-                    text-align: center;
+                    text-align: start;
                     font-size: 16px;
+                    max-height: 300px;
+                    margin-bottom: 16px;
                 }
                 
             }
         }
-    }
-    &__list {
-        margin-top: 16px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-    &__images {
-        margin-top: 32px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        @media (max-width: 1024px) { 
-            align-items: center;
-            justify-content: center;
-        }
 
     }
-    .image {
-        border-radius: 30px;
-        @media (max-width: 762px) { 
-            align-items: center;
-            justify-content: center;
-            height: 350px;
+    &__reversed {
+        text-align: end;
+        &__title {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
         }
     }
-}
-.block_one{
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
-     @media (max-width: 762px) { 
-        flex-direction: column;
-    }
-     &__info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        margin-top: 48px;
-             @media (max-width: 762px) { 
-             align-items: center;
-        }
-        &__img {
+    &__images {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        img {
+            width: 300px;
+            height: 300px;
+            border-radius: 12px;
+            @media (max-width: 1424px) { 
+                width: 200px;
+                height: 200px;
+            }
             @media (max-width: 762px) { 
-                height: 150px;
-           }
-        
+                width: 155px;
+                height: 155px;
+            }
+    
         }
-     }
+        @media (max-width: 1024px) { 
+            gap: 16px;
+        }
+        @media (max-width: 762px) { 
+            gap: 8px
+        } 
+
+    }
+
 }
 </style>

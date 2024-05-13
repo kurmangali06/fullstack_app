@@ -1,14 +1,15 @@
 <template>
   <template v-if="contentStore.content.section?.length">
-    <div v-for="(section) in contentStore.content.section" :key="section._id">
-      <Block :section="section" ></Block>
+    <div v-for="(section, index) in contentStore.content.section" :key="section._id">
+      <Block :section="section" :number="index + 1"></Block>
     </div>
-    <!-- <Service/> -->
+    <Service/>
   </template>
    
 </template>
 
 <script lang="ts" setup>
+import Service from '~/components/service.vue';
 const contentStore = useContentStore()
 
 </script>

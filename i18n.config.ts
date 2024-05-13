@@ -12,11 +12,12 @@ export default defineI18nConfig(() => ({
         name: 'Name',
         subInfo: 'Additional Information',
         contacts: 'Contacts',
-        address: 'ADDRESS',
+        address: 'Address',
         navigation: 'Navigation',
         web: 'Website',
         instagram: 'Instagram',
-        lang: 'Language'
+        lang: 'Language',
+        conditation: '*By submitting an application, you consent to the processing of personal data',
       },
       ru: {
         service: 'cервис',
@@ -26,11 +27,12 @@ export default defineI18nConfig(() => ({
         name: 'Имя',
         subInfo: 'Дополнительная информация',
         contacts: 'Контакты',
-        address: 'АДРЕС',
+        address: 'Адрес',
         navigation: 'Навигация',
         web: 'Веб-сайт',
         instagram: 'Инстаграм',
-        lang: 'Язык'
+        lang: 'Язык',
+        conditation: '*Оставляя заявку Вы даете согласие  на обработку личных данных',
       },
       kz: {
         service: 'Қызмет',
@@ -40,11 +42,12 @@ export default defineI18nConfig(() => ({
         name: 'Аты',
         subInfo: 'қосымша ақпарат',
         contacts: 'Контактілер',
-        address: 'АДРЕС',
+        address: 'Адрес',
         navigation: 'Навигация',
         web: 'Веб-сайт',
         instagram: 'Инстаграм',
-        lang: 'Тіл'
+        lang: 'Тіл',
+        conditation: '* Өтінімді қалдыру арқылы Сіз Жеке деректерді өңдеуге келісім бересіз',
       }
     }
 }));

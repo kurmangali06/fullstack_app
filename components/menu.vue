@@ -80,7 +80,7 @@ function closeMenu () {
         padding: 0;
         z-index: 1;
         width: 148px;
-        background-color: #1C1C1C;
+        background-color: #043B40;
         &__close {
            display: flex;
            justify-content: flex-end;

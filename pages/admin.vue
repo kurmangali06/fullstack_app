@@ -142,132 +142,6 @@
                                             </div>
                                         </a-upload>
                                     </a-form-item>
-                                    <VueDraggableNext
-                                        class="dragchildren"
-                                        :list="item.items"
-                                    >
-                                        <template v-if="item.items.length">
-                                            <div
-                                                class="wrapper block"
-                                                v-for="(el, i) in item.items"
-                                                :key="el._id"
-                                            >
-                                                <div>
-                                                    <a-form-item
-                                                        label="заголовок блока RU"
-                                                    >
-                                                        <a-input
-                                                            v-model:value="
-                                                                el.title_ru
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                    <a-form-item
-                                                        label="заголовок блока EN"
-                                                    >
-                                                        <a-input
-                                                            v-model:value="
-                                                                el.title_en
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                    <a-form-item
-                                                        label="заголовок блока KZ"
-                                                    >
-                                                        <a-input
-                                                            v-model:value="
-                                                                el.title_kz
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                    <a-form-item
-                                                        label="описание блока RU"
-                                                    >
-                                                        <a-textarea
-                                                            v-model:value="
-                                                                el.description_ru
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                    <a-form-item
-                                                        label="описание блока EN"
-                                                    >
-                                                        <a-textarea
-                                                            v-model:value="
-                                                                el.description_en
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                    <a-form-item
-                                                        label="описание блока KZ"
-                                                    >
-                                                        <a-textarea
-                                                            v-model:value="
-                                                                el.description_kz
-                                                            "
-                                                            placeholder="please input title"
-                                                            style="
-                                                                width: 80%;
-                                                                margin-right: 8px;
-                                                            "
-                                                        />
-                                                    </a-form-item>
-                                                </div>
-                                                <MinusCircleOutlined
-                                                    style="color: red"
-                                                    v-if="
-                                                        formState.footer.links
-                                                    "
-                                                    class="dynamic-delete-button"
-                                                    @click.stop="
-                                                        removeChild(
-                                                            el,
-                                                            index,
-                                                            i
-                                                        )
-                                                    "
-                                                />
-                                            </div>
-                                        </template>
-                                    </VueDraggableNext>
-                                    <a-form-item class="wrapper">
-                                        <a-button
-                                            type="dashed"
-                                            style="
-                                                width: 300px;
-                                                margin-top: 20px;
-                                            "
-                                            @click="addChild(index)"
-                                        >
-                                            <PlusOutlined />
-                                            Добавить блок
-                                        </a-button>
-                                    </a-form-item>
                                 </div>
                                 <DeleteOutlined
                                     style="flex-grow: 0; color: red"
@@ -434,9 +308,6 @@ async function submitForm() {
     }
 }
 
-function removeChild(el: IBlock, i: number, childIndex: number) {
-    formState.section[i].items.splice(childIndex, 1);
-}
 
 function removeSection(item: ISection) {
     const deleteElement = formState.section.find(
@@ -483,20 +354,6 @@ function addSection() {
     });
 }
 
-function addChild(i: number) {
-    const _id = crypto.randomUUID();
-    formState.section[i].items.push({
-        _id,
-        title: "",
-        description: "",
-        title_en: "",
-        title_ru: "",
-        title_kz: "",
-        description_en: "",
-        description_ru: "",
-        description_kz: "",
-    });
-}
 
 await useFetch<IAllItems>("/api/content").then((response) => {
     if (response.data && response.data.value && response.data.value.data) {

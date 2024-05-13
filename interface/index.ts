@@ -45,7 +45,6 @@ export  interface ISection {
     description_kz: string
     _id:  string
     images: string[]
-    items:IBlock[]
     [key: string]: any
 }
 export interface IHeader {
