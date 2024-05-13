@@ -9,6 +9,7 @@
                     :src="`images/${img}`"
                     class="image"
                     alt="фото"
+                    @click="openModal(img)"
                 />
             </div>
         </template>
@@ -35,6 +36,7 @@
                     :src="`images/${img}`"
                     class="image"
                     alt="фото"
+                    @click="openModal(img)"
                 />
             </div>
         </template>
@@ -48,10 +50,16 @@
                     :src="`images/${img}`"
                     class="image"
                     alt="фото"
+                    @click="openModal(img)"
                 />
             </div>
         </template>
     </div>
+    <a-modal width="80%"  height="80" v-model:open="show" :footer="null" @hide="show = false" >
+        <div class="modalBody">
+            <img class="currentImage" :src="`images/${currentImage}`" alt="" >
+        </div>
+    </a-modal>
 </template>
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
@@ -69,8 +77,14 @@ const props = defineProps({
     }
 });
 const screenWidth = ref(0);
+const currentImage = ref('')
+const show = ref(false)
 const { locale } = useI18n() 
 
+function openModal(image: string) {
+    currentImage.value = image
+    show.value = true    
+}
 onMounted(() => {
     screenWidth.value = window.innerWidth;
     window.addEventListener("resize", () => {
@@ -164,6 +178,7 @@ onMounted(() => {
             width: 300px;
             height: 300px;
             border-radius: 12px;
+            cursor: pointer;
             @media (max-width: 1424px) { 
                 width: 200px;
                 height: 200px;
@@ -183,5 +198,19 @@ onMounted(() => {
 
     }
 
+}
+.currentImage {
+    width: 90%;
+    height: 70%;
+    @media (max-width: 762px) { 
+        width: 100%;
+        height: 100%;
+    } 
+}
+.modalBody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 </style>
