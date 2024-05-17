@@ -18,15 +18,6 @@
     <a-form-item label="доп заголовок KZ" style="width: 100%">
       <a-input v-model:value="state.subtitle_kz" />
     </a-form-item>
-    <a-form-item label="описание EN" style="width: 100%">
-      <a-textarea v-model:value="state.description_en" />
-    </a-form-item>
-    <a-form-item label="описание RU" style="width: 100%">
-      <a-textarea v-model:value="state.description_ru" />
-    </a-form-item>
-    <a-form-item label="описание KZ" style="width: 100%">
-      <a-textarea v-model:value="state.description_kz" />
-    </a-form-item>
   </a-card>
 </template>
 <script setup lang="ts">
@@ -46,12 +37,9 @@ let state = reactive<IHeader>({
   title_en: "",
   title_ru: "",
   title_kz: "",
-  description_en: "",
-  description_ru: "",
-  description_kz: "",
   subtitle_en: "",
   subtitle_ru: "",
-  subtitle_kz: ""
+  subtitle_kz: "",
 });
 
 watch(

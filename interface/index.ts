@@ -51,9 +51,6 @@ export interface IHeader {
     title_en: string
     title_ru: string
     title_kz: string
-    description_en: string
-    description_ru: string
-    description_kz: string
     subtitle_en: string
     subtitle_ru: string
     subtitle_kz: string
